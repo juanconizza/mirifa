@@ -1,4 +1,6 @@
-// FUNCION DEFINIDA PARA LA CREACIÓN DE LA RIFA POR PARTE DEL USUARIO QUE LUEGO COMPARTIRÁ LA MISMA. FALTA AGREGAR INFORMCIÓN DE PAGO POR MERCADOPAGO UTILIZANDO LA API.
+// CREACIÓN DE LA RIFA POR PARTE DEL USUARIO QUE LUEGO COMPARTIRÁ LA MISMA. FALTA AGREGAR INFORMCIÓN DE PAGO POR MERCADOPAGO UTILIZANDO LA API.
+
+//FUNCION NOMBRE DE LA RIFA
 
 function crearRifa() {
   alert("Bienvenido a MI RIFA, haga click en ACEPTAR para crear tu Rifa");
@@ -6,6 +8,11 @@ function crearRifa() {
   let nombreRifa = prompt(
     "Ingrese el nombre de tu institución o nombre a asignarle a su Rifa"
   );
+}
+
+//FUNCION PREMIOS A SORTEAR
+
+function premios() {
   let cantPremios = Number(prompt("Ingrese la cantidad de premios a rifar"));
 
   if (isNaN(cantPremios) || cantPremios <= 0) {
@@ -40,7 +47,7 @@ function crearRifa() {
   alert("Rifa creada exitosamente. ¡Ya puedes salir a vender tu Rifa!");
 
   alert(
-    `Aquí tienes un resumen de la rifa creada para ${nombreRifa}: Premios: ${cantPremios}, Valor de la Rifa $${valorDeLaRifa}, Numeros Emitidos: ${numerosAEmitir}, Fecha del Sorteo: ${fechaSorteo}. El Total a Recaudar Será de: $${totalARecuadar}  ¡Gracias!`
+    `Aquí tienes un resumen de la rifa creada para ${crearRifa.nombreRifa}: Premios: ${cantPremios}, Valor de la Rifa $${valorDeLaRifa}, Numeros Emitidos: ${numerosAEmitir}, Fecha del Sorteo: ${fechaSorteo}. El Total a Recaudar Será de: $${totalARecuadar}  ¡Gracias!`
   );
 
   baseDeDatosPremios.push({
@@ -53,4 +60,4 @@ function crearRifa() {
 }
 
 crearRifa();
-
+premios();
