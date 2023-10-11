@@ -131,7 +131,7 @@ function participar() {
   // Verificar si hay rifas disponibles
   if (baseDeDatosRifas.length === 0) {
     alert("No hay rifas disponibles para participar");
-    return;
+    return; //sale de la applicacion.
   }
 
   // Mostrar las opciones de rifas disponibles
@@ -240,7 +240,6 @@ function sortearRifa(nombreRifa) {
   alert(`¡El ganador de la rifa "${nombreRifa}" es: ${ganador.nombre} ${ganador.apellido}!`);
 }
 
-// Ejemplo de cómo realizar el sorteo de una rifa específica (reemplaza "Nombre de la Rifa" con el nombre de la rifa que quieras sortear)
 
 sortearRifa(rifaElegida.nombre);
 
