@@ -343,7 +343,7 @@ function logout() {
   // Elimina la información de la sesión del usuario
   localStorage.removeItem("loggedInUser");
   // Redirige al usuario a la página de inicio de sesión u otra página deseada
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 }
 
 /********* LOGIN ************/
