@@ -397,7 +397,7 @@ h6 {
   font-size: 24px;
 }
 
-#hero .btn-get-started {
+.btn-get-started {
   font-family: "Jost", sans-serif;
   font-weight: 500;
   font-size: 16px;
@@ -411,7 +411,7 @@ h6 {
   background: #47b2e4;
 }
 
-#hero .btn-get-started:hover {
+ .btn-get-started:hover {
   background: #209dd8;
 }
 
