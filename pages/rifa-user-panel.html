@@ -53,10 +53,9 @@
 
         <nav id="navbar" class="navbar">
           <ul>
-            <li><a class="nav-link scrollto active" href="../index.html#hero">Inicio</a></li>
-            <li><a class="nav-link scrollto" href="../index.html#about">Nosotros</a></li>
-            <li><a class="nav-link scrollto" href="../index.html#services">Ventajas</a></li>
-            <li><a class="nav-link scrollto" href="../index.html#contact">Contacto</a></li>
+            <li><a class="nav-link scrollto active" href="../index.html#hero">Mis Rifas</a></li>
+            <li><a class="nav-link scrollto" href="../index.html#about">Configuración de Cobro</a></li>
+            <li><a class="nav-link scrollto" href="../index.html#contact">Soporte</a></li>
             <li>
               <a class="getstarted scrollto" href="#" onclick="logout()">Cerrar Sesión</a>
             </li>
@@ -64,7 +63,7 @@
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
         <!-- .navbar -->
-      </div>
+      </div> 
     </header>
     <!-- End Header -->
 
@@ -85,14 +84,53 @@
     </section><!-- End Breadcrumbs -->
 
     <section class="inner-page">
-      <div class="container">
-        <p>
-          PANEL DE USUARIO
-        </p>
-      </div>
+      <div class="container text-center">
+        <h1>No hay Rifas Creadas</h1>
+        <p>Parece que no se ha creado ninguna rifa hasta el momento.</p>
+        <button class="btn-get-started" onclick="crearRifa()">Crear Rifa</button>
     </section>
 
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h2>¡Crea tu Rifa!</h2>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="text-center col-lg-4 col-md-4 col-sm-3">
+          <form id="rifaForm">
+            <div class="mb-3">
+              <label for="nombreRifa" class="form-label">Nombre de la Rifa:</label>
+              <input type="text" id="nombreRifa" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="cantPremios" class="form-label">Cantidad de Premios:</label>
+              <input type="number" id="cantPremios" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="valorDeLaRifa" class="form-label">Valor de la Rifa:</label>
+              <input type="number" id="valorDeLaRifa" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="numerosAEmitir" class="form-label">Cantidad de Rifas a Emitir:</label>
+              <input type="number" id="numerosAEmitir" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="fechaSorteo" class="form-label">Fecha del Sorteo (dd/mm/aaaa):</label>
+              <input type="text" id="fechaSorteo" class="form-control" required>
+            </div>
+            <div id="premiosContainer">
+              <!-- Aquí se agregarán los campos de entrada para los nombres de premios -->
+            </div>
+            <button type="button" id="agregarPremio" class="btn btn-primary">Agregar Premio</button>
+            <button type="button" id="crearRifa" class="btn btn-success">Crear Rifa</button>
+          </form>
+        </div>
+      </div>
+    </div>
     
+    
+
 
   </main><!-- End #main -->
 
