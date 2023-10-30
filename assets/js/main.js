@@ -1,3 +1,11 @@
+
+//CARGO ESTE DOMCONTENTLOADED al comienzo ya que de otra forma no funciona en el panel de usuario
+
+// document.addEventListener("DOMContentLoaded", function() {
+//   const cantPremiosInput = document.getElementById("cantPremios");
+// cantPremiosInput.addEventListener("input", agregarCasillasDePremios);
+
+
 (function () {
   "use strict";
 
@@ -269,6 +277,7 @@
 /********* LOGIN ************/
 
 // Función para iniciar sesión
+
 function login(event) {
   event.preventDefault();
 
@@ -289,7 +298,15 @@ function login(event) {
   }
 }
 
-// Función para verificar si el usuario está logeado
+// Funcion para "REGISTRATE AQUÍ"
+document
+  .getElementById("show-register-form")
+  .addEventListener("click", function () {
+    document.getElementById("register-form").style.display = "block";
+    document.getElementById("login-form").style.display = "none";
+  });
+  
+// Función para verificar si el usuario está logeado. SIMPRE AL FINAL DEL CODIGO. 
 function checkLoggedIn() {
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (loggedInUser) {
@@ -298,15 +315,7 @@ function checkLoggedIn() {
     document.getElementById("login-form").style.display = "block";
   }
 }
-
-// Funcion para "REGISTRATE AQUÍ"
-document
-  .getElementById("show-register-form")
-  .addEventListener("click", function () {
-    document.getElementById("register-form").style.display = "block";
-    document.getElementById("login-form").style.display = "none";
-  });
-
+  
 // Función para registrar un nuevo usuario
 function register(event) {
   event.preventDefault();
@@ -335,6 +344,7 @@ function register(event) {
   redirectUserToLogin(5); // Redirige al usuario después de 5 segundos
 }
 
+
 // Función para redirigir al usuario después de un cierto número de segundos
 function redirectUserToLogin(seconds) {
   const redirectCounter = document.getElementById("redirect-counter");
@@ -351,7 +361,7 @@ function redirectUserToLogin(seconds) {
   }, 1000);
 }
 
-// Verificar si el usuario está logeado al cargar la página
+// Verificar si el usuario está logeado al cargar la página. SIMPRE AL FINAL DEL CODIGO. 
 checkLoggedIn();
 
 //Cerrar Sesion
@@ -363,36 +373,39 @@ function logout() {
   window.location.href = "../index.html";
 }
 
-/********* LOGIN ************/
+/********* FIN - LOGIN ************/
 
 /***** PANEL DE USUARIO *******/
 
-// Función para agregar un campo de premio al formulario
-function agregarPremio() {
-  const cantPremios = parseInt(
-    document.getElementById("cantPremios").value,
-    10
-  );
-  const premiosContainer = document.getElementById("premiosContainer");
 
-  for (let i = 1; i <= cantPremios; i++) {
-    const nuevoCampo = document.createElement("div");
-    nuevoCampo.className = "mb-3";
+  // Función para agregar casillas de premios
+  function agregarCasillasDePremios() {
+    const cantPremios = parseInt(cantPremiosInput.value, 10);
+    const premiosContainer = document.getElementById("premiosContainer");
 
-    const label = document.createElement("label");
-    label.textContent = `Nombre del Premio #${i}:`;
-    label.className = "form-label";
+    // Limpia el contenedor actual
+    premiosContainer.innerHTML = "";
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.className = "form-control";
+    for (let i = 1; i <= cantPremios; i++) {
+      const nuevoCampo = document.createElement("div");
+      nuevoCampo.className = "mb-3";
 
-    nuevoCampo.appendChild(label);
-    nuevoCampo.appendChild(input);
-    premiosContainer.appendChild(nuevoCampo);
+      const label = document.createElement("label");
+      label.textContent = `Nombre del Premio #${i}:`;
+      label.className = "form-label";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "form-control";
+
+      nuevoCampo.appendChild(label);
+      nuevoCampo.appendChild(input);
+      premiosContainer.appendChild(nuevoCampo);
+    }
   }
-}
 
-// Asocia la función al botón "Agregar Premio"
-const agregarPremioButton = document.getElementById("agregarPremio");
-agregarPremioButton.addEventListener("click", agregarPremio);
+
+
+
+
+
