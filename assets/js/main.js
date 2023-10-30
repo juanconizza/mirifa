@@ -1,9 +1,6 @@
 
 //CARGO ESTE DOMCONTENTLOADED al comienzo ya que de otra forma no funciona en el panel de usuario
 
-// document.addEventListener("DOMContentLoaded", function() {
-//   const cantPremiosInput = document.getElementById("cantPremios");
-// cantPremiosInput.addEventListener("input", agregarCasillasDePremios);
 
 
 (function () {
@@ -274,9 +271,21 @@
   });
 })();
 
+
+
+let cantPremiosInput;
+
+document.addEventListener("DOMContentLoaded", function() {
+  cantPremiosInput = document.getElementById("cantPremios");
+  if (cantPremiosInput) {
+    cantPremiosInput.addEventListener("input", agregarCasillasDePremios);
+  }
+});
+
 /********* LOGIN ************/
 
 // Función para iniciar sesión
+
 
 function login(event) {
   event.preventDefault();
@@ -306,15 +315,6 @@ document
     document.getElementById("login-form").style.display = "none";
   });
   
-// Función para verificar si el usuario está logeado. SIMPRE AL FINAL DEL CODIGO. 
-function checkLoggedIn() {
-  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
-  if (loggedInUser) {
-    window.location.href = "rifa-user-panel.html";
-  } else {
-    document.getElementById("login-form").style.display = "block";
-  }
-}
   
 // Función para registrar un nuevo usuario
 function register(event) {
@@ -361,8 +361,6 @@ function redirectUserToLogin(seconds) {
   }, 1000);
 }
 
-// Verificar si el usuario está logeado al cargar la página. SIMPRE AL FINAL DEL CODIGO. 
-checkLoggedIn();
 
 //Cerrar Sesion
 
@@ -377,35 +375,44 @@ function logout() {
 
 /***** PANEL DE USUARIO *******/
 
+// Función para agregar casillas de premios
+function agregarCasillasDePremios() {
+  const cantPremios = parseInt(cantPremiosInput.value, 10);
+  const premiosContainer = document.getElementById("premiosContainer");
 
-  // Función para agregar casillas de premios
-  function agregarCasillasDePremios() {
-    const cantPremios = parseInt(cantPremiosInput.value, 10);
-    const premiosContainer = document.getElementById("premiosContainer");
+  // Limpia el contenedor actual
+  premiosContainer.innerHTML = "";
 
-    // Limpia el contenedor actual
-    premiosContainer.innerHTML = "";
+  for (let i = 1; i <= cantPremios; i++) {
+    const nuevoCampo = document.createElement("div");
+    nuevoCampo.className = "mb-3";
 
-    for (let i = 1; i <= cantPremios; i++) {
-      const nuevoCampo = document.createElement("div");
-      nuevoCampo.className = "mb-3";
+    const label = document.createElement("label");
+    label.textContent = `Nombre del Premio #${i}:`;
+    label.className = "form-label";
 
-      const label = document.createElement("label");
-      label.textContent = `Nombre del Premio #${i}:`;
-      label.className = "form-label";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "form-control";
 
-      const input = document.createElement("input");
-      input.type = "text";
-      input.className = "form-control";
-
-      nuevoCampo.appendChild(label);
-      nuevoCampo.appendChild(input);
-      premiosContainer.appendChild(nuevoCampo);
-    }
+    nuevoCampo.appendChild(label);
+    nuevoCampo.appendChild(input);
+    premiosContainer.appendChild(nuevoCampo);
   }
+}
 
+// Función para verificar si el usuario está logeado. SIMPRE AL FINAL DEL CODIGO. 
+function checkLoggedIn() {
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (loggedInUser) {
+    window.location.href = "rifa-user-panel.html";
+       
+  } else {
+    document.getElementById("login-form").style.display = "block";
+  }
+}
 
-
-
+// Verificar si el usuario está logeado al cargar la página. SIMPRE AL FINAL DEL CODIGO. 
+checkLoggedIn();
 
 
