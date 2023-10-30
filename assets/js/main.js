@@ -278,11 +278,13 @@ let cantPremiosInput;
 document.addEventListener("DOMContentLoaded", function() {
   cantPremiosInput = document.getElementById("cantPremios");
   document.getElementById("crearRifa").addEventListener("click", crearRifa);
-
+    
   if (cantPremiosInput) {
     cantPremiosInput.addEventListener("input", agregarCasillasDePremios);
   }
 });
+
+
 
 /********* LOGIN ************/
 
@@ -382,7 +384,9 @@ function logout() {
 
 
 
-// Función para agregar casillas de premios
+// Función para agregar casillas de premios //
+
+
 function agregarCasillasDePremios() {
   const cantPremios = parseInt(cantPremiosInput.value, 10);
   const premiosContainer = document.getElementById("premiosContainer");
@@ -444,15 +448,121 @@ function validarFecha() {
   return true;
 }
 
+document.getElementById("crearRifa").addEventListener("click", crearRifa);
 
-// Función que se ejecuta al hacer clic en "crearRifa"
+// ***** FIN FUNCION VALIDADORA DE FECHA *****
+
+
+// ******** FUNCION CONSTRUCTORA DE RIFAS ******
+
 function crearRifa() {
   if (validarFecha()) {
-        
+    const nombreRifa = document.getElementById("nombreRifa").value;
+    const cantPremios = parseInt(cantPremiosInput.value, 10);
+    const valorDeLaRifa = document.getElementById("valorDeLaRifa").value;
+    const numerosAEmitir = document.getElementById("numerosAEmitir").value;
+    const fechaSorteo = document.getElementById("fechaSorteo").value;
+
+    const premios = [];
+    const premiosInputs = document.querySelectorAll("#premiosContainer input");
+    premiosInputs.forEach(input => {
+      premios.push(input.value);
+    });
+
+    const rifa = {
+      nombre: nombreRifa,
+      cantidadPremios: cantPremios,
+      valor: valorDeLaRifa,
+      cantidadNumeros: numerosAEmitir,
+      fechaSorteo: fechaSorteo,
+      premios: premios
+    };
+
+    let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+    rifas.push(rifa);
+    localStorage.setItem("rifas", JSON.stringify(rifas));
+
+    mostrarRifas();
   }
 }
+  
+  // Crea un objeto para representar la rifa
+  const rifa = {
+    nombre: nombreRifa,
+    premios: [],
+    valor: valorDeLaRifa,
+    cantidadNumeros: numerosAEmitir,
+    fechaSorteo: fechaSorteo
+  };
 
-document.getElementById("crearRifa").addEventListener("click", crearRifa);
+  // Agrega los nombres de los premios al objeto rifa
+  const premiosInputs = document.querySelectorAll("#premiosContainer input");
+  premiosInputs.forEach(input => {
+    rifa.premios.push(input.value);
+  });
+
+  // Guarda la rifa en el almacenamiento local
+  let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+  rifas.push(rifa);
+  localStorage.setItem("rifas", JSON.stringify(rifas));
+
+  // Actualiza la lista de rifas en el DOM
+  mostrarRifas();
+
+  // Limpia el formulario
+  document.getElementById("rifaForm").reset();
+
+
+// Función para mostrar las rifas en el DOM
+function mostrarRifas() {
+  const rifasContainer = document.getElementById("rifasContainer");
+  rifasContainer.innerHTML = "";
+
+  const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+
+  rifas.forEach((rifa, index) => {
+    const rifaDiv = document.createElement("div");
+    rifaDiv.className = "rifa";
+    rifaDiv.innerHTML = `
+      <h3>${rifa.nombre}</h3>
+      <p>Cantidad de Premios: ${rifa.cantidadPremios}</p>
+      <p>Valor de la Rifa: ${rifa.valor}</p>
+      <p>Fecha del Sorteo: ${rifa.fechaSorteo}</p>
+      <ul>
+        ${rifa.premios.map((premio, i) => `<li>Premio #${i + 1}: ${premio}</li>`).join('')}
+      </ul>
+      <button onclick="eliminarRifa(${index})">Eliminar</button>
+      <button onclick="compartirRifa(${index})">Compartir</button>
+      <button onclick="sortearRifa(${index})">Sortear</button>
+    `;
+
+    rifasContainer.appendChild(rifaDiv);
+  });
+}
+
+
+// Función para eliminar una rifa
+function eliminarRifa(index) {
+  let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+  rifas.splice(index, 1);
+  localStorage.setItem("rifas", JSON.stringify(rifas));
+  mostrarRifas();
+}
+
+// Función para compartir una rifa (puedes implementarla según tus necesidades)
+function compartirRifa(index) {
+  // Implementa la lógica de compartir la rifa
+}
+
+// Función para sortear una rifa (puedes implementarla según tus necesidades)
+function sortearRifa(index) {
+  // Implementa la lógica de sortear la rifa
+}
+
+// Mostrar las rifas al cargar la página
+mostrarRifas();
+
+
 
 
 /***** FIN PANEL DE USUARIO *******/
@@ -471,5 +581,4 @@ function checkLoggedIn() {
 
 // Verificar si el usuario está logeado al cargar la página. SIMPRE AL FINAL DEL CODIGO. 
 checkLoggedIn();
-
 
