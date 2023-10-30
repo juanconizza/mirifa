@@ -277,6 +277,8 @@ let cantPremiosInput;
 
 document.addEventListener("DOMContentLoaded", function() {
   cantPremiosInput = document.getElementById("cantPremios");
+  document.getElementById("crearRifa").addEventListener("click", crearRifa);
+
   if (cantPremiosInput) {
     cantPremiosInput.addEventListener("input", agregarCasillasDePremios);
   }
@@ -285,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function() {
 /********* LOGIN ************/
 
 // Función para iniciar sesión
+
 
 
 function login(event) {
@@ -362,7 +365,7 @@ function redirectUserToLogin(seconds) {
 }
 
 
-//Cerrar Sesion
+//Cerrar Sesion//
 
 function logout() {
   // Elimina la información de la sesión del usuario
@@ -371,9 +374,13 @@ function logout() {
   window.location.href = "../index.html";
 }
 
+
+
 /********* FIN - LOGIN ************/
 
 /***** PANEL DE USUARIO *******/
+
+
 
 // Función para agregar casillas de premios
 function agregarCasillasDePremios() {
@@ -400,6 +407,56 @@ function agregarCasillasDePremios() {
     premiosContainer.appendChild(nuevoCampo);
   }
 }
+
+
+// ***** FUNCION VALIDADORA DE FECHA *****
+
+
+// Función para validar el formato de la fecha y que sea mayor que la fecha actual
+function validarFecha() {
+  const fechaInput = document.getElementById("fechaSorteo");
+  const fechaSorteoError = document.getElementById("fechaSorteoError");
+  const fechaRegex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+
+  const match = fechaInput.value.match(fechaRegex);
+  if (!match) {
+    fechaSorteoError.textContent = "El formato de la fecha debe ser dd/mm/aaaa";
+    fechaSorteoError.style.color = "red";
+    fechaInput.focus();
+    return false;
+  }
+
+  const dia = parseInt(match[1], 10);
+  const mes = parseInt(match[2], 10) - 1; // Restamos 1 al mes porque los meses en JavaScript van de 0 a 11
+  const anio = parseInt(match[3], 10);
+
+  const fechaIngresada = new Date(anio, mes, dia);
+  const fechaActual = new Date();
+
+  if (fechaIngresada <= fechaActual) {
+    fechaSorteoError.textContent = "La fecha del sorteo debe ser mayor que la fecha actual.";
+    fechaSorteoError.style.color = "red";
+    fechaInput.focus();
+    return false;
+  }
+
+  fechaSorteoError.textContent = "";
+  return true;
+}
+
+
+// Función que se ejecuta al hacer clic en "crearRifa"
+function crearRifa() {
+  if (validarFecha()) {
+        
+  }
+}
+
+document.getElementById("crearRifa").addEventListener("click", crearRifa);
+
+
+/***** FIN PANEL DE USUARIO *******/
+
 
 // Función para verificar si el usuario está logeado. SIMPRE AL FINAL DEL CODIGO. 
 function checkLoggedIn() {
