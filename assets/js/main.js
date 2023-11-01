@@ -375,7 +375,7 @@ function logout() {
   let timerInterval
 Swal.fire({
   title: 'Cerraste la Sesión',
-  html: 'Saliendo en... <b></b> milliseconds.',
+  html: 'Saliendo en... <b></b> segundos.',
   timer: 2000,
   timerProgressBar: true,
   didOpen: () => {
