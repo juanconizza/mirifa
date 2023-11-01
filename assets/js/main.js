@@ -378,6 +378,7 @@ Swal.fire({
   html: 'Saliendo en... <b></b> segundos.',
   timer: 2000,
   timerProgressBar: true,
+  icon: `success`,
   didOpen: () => {
     Swal.showLoading()
     const b = Swal.getHtmlContainer().querySelector('b')
