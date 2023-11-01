@@ -372,11 +372,30 @@ function redirectUserToLogin(seconds) {
 function logout() {
   // Elimina la información de la sesión del usuario
   localStorage.removeItem("loggedInUser");
-  // Redirige al usuario a la página de inicio de sesión u otra página deseada
-  window.location.href = "../index.html";
+  let timerInterval
+Swal.fire({
+  title: 'Cerraste la Sesión',
+  html: 'Saliendo en... <b></b> milliseconds.',
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading()
+    const b = Swal.getHtmlContainer().querySelector('b')
+    timerInterval = setInterval(() => {
+      b.textContent = Swal.getTimerLeft()
+    }, 100)
+  },
+  willClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  /* Read more about handling dismissals below */
+  if (result.dismiss === Swal.DismissReason.timer) {
+     // Redirige al usuario a la página de inicio de sesión u otra página deseada
+    window.location.href = "../index.html";
+  }
+})
 }
-
-
 
 /********* FIN - LOGIN ************/
 
