@@ -54,7 +54,7 @@
 
         <nav id="navbar" class="navbar">
           <ul>
-            <li><a class="nav-link scrollto active" href="../index.html#hero">Mis Rifas</a></li>
+            <li><a class="nav-link scrollto active" href="rifa-user-panel.html">Mis Rifas</a></li>
             <li><a class="nav-link scrollto" href="../index.html#about">Configuración de Cobro</a></li>
             <li><a class="nav-link scrollto" href="../index.html#contact">Soporte</a></li>
             <li>
@@ -84,16 +84,15 @@
       </div>
     </section><!-- End Breadcrumbs -->
 
-    <section class="inner-page">
-      <div class="container text-center">
-        <h1>No hay Rifas Creadas</h1>
-        <p>Parece que no se ha creado ninguna rifa hasta el momento.</p>
-        <button class="btn-get-started" onclick="crearRifa()">Crear Rifa</button>
-    </section>
+    <div id="noRifasContainer">
+      <!-- Aquí se muestra mensaje si no hay rifas creadas -->
+    </div>
 
-    <div class="container">
+<!--Formulario para Crear Nueva Rifa  -->
+
+<div id="crearRifaForm" class="container">
       <div class="row">
-        <div class="col-12 text-center">
+        <div id="creaRifaTitle" class="col-12 text-center">
           <h2>¡Crea tu Rifa!</h2>
         </div>
       </div>
@@ -128,17 +127,19 @@
           </form>
         </div>
       </div>
-    </div>
+    </div> 
 
     <!-- RIFAS CREADAS -->
     
-    <div id="rifasContainer">
-      <!-- Aquí se mostrarán las rifas guardadas -->
+    <div class="container">
+      <div id="rifasContainer" class="row justify-content-center mt-3">
+            
+ <!-- Aquí se mostrarán las rifas guardadas -->
+      </div>
     </div>
 
 
   </main><!-- End #main -->
-
 
   <!-- ======= Footer ======= -->
   <footer id="footer">

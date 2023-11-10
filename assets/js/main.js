@@ -282,15 +282,33 @@ document.addEventListener("DOMContentLoaded", function() {
   if (cantPremiosInput) {
     cantPremiosInput.addEventListener("input", agregarCasillasDePremios);
   }
+
+  //Función para validad si hay rifas creadas o no en el login
+
+const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+
+if (!rifas.length) {
+  // No hay rifas almacenadas
+  document.querySelector("#noRifasContainer").innerHTML = `
+    <section class="inner-page">
+      <div class="container text-center">
+        <h1>No hay Rifas Creadas</h1>
+        <p>Parece que no se ha creado ninguna rifa hasta el momento.</p>
+        <button class="btn-get-started" onclick="abrirFormulario()">Crear Rifa</button>
+    </section>
+  `;
+  document.querySelector("#crearRifaForm").style.display = "none";
+}
+else{
+mostrarRifas()
+
+}
+
 });
-
-
 
 /********* LOGIN ************/
 
 // Función para iniciar sesión
-
-
 
 function login(event) {
   event.preventDefault();
@@ -402,7 +420,13 @@ Swal.fire({
 
 /***** PANEL DE USUARIO *******/
 
-
+// Función para abrir formulario de nueva rifa.
+function abrirFormulario() {
+  // Mostrar el formulario de creación de rifas
+  document.querySelector("#crearRifaForm").style.display = "block";
+  document.querySelector("#noRifasContainer").style.display = "none";
+  document.querySelector("#creaRifaTitle").classList.add("mt-5");
+}
 
 // Función para agregar casillas de premios //
 
@@ -473,8 +497,6 @@ document.getElementById("crearRifa").addEventListener("click", crearRifa);
 // ***** FIN FUNCION VALIDADORA DE FECHA *****
 
 
-// ******** FUNCION CONSTRUCTORA DE RIFAS ******
-
 function crearRifa() {
   if (validarFecha()) {
     const nombreRifa = document.getElementById("nombreRifa").value;
@@ -501,6 +523,7 @@ function crearRifa() {
     let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
     rifas.push(rifa);
     localStorage.setItem("rifas", JSON.stringify(rifas));
+
 
     mostrarRifas();
   }
@@ -542,26 +565,36 @@ function mostrarRifas() {
 
   rifas.forEach((rifa, index) => {
     const rifaDiv = document.createElement("div");
-    rifaDiv.className = "rifa";
+    rifaDiv.className = "rifa col-lg-4 col-md-6 col-sm-12 border border-dark m-4";
     rifaDiv.innerHTML = `
-      <h3>${rifa.nombre}</h3>
-      <p>Cantidad de Premios: ${rifa.cantidadPremios}</p>
-      <p>Valor de la Rifa: ${rifa.valor}</p>
-      <p>Fecha del Sorteo: ${rifa.fechaSorteo}</p>
-      <ul>
-        ${rifa.premios.map((premio, i) => `<li>Premio #${i + 1}: ${premio}</li>`).join('')}
-      </ul>
-      <button onclick="eliminarRifa(${index})">Eliminar</button>
-      <button onclick="compartirRifa(${index})">Compartir</button>
-      <button onclick="sortearRifa(${index})">Sortear</button>
+       
+            <h2 class="card-header text-center">${rifa.nombre}</h2>
+            <div class="card-body m-3">
+              <p><span class="fw-bold">Cantidad de Premios:</span> ${rifa.cantidadPremios}</p>
+              <p><span class="fw-bold">Valor de la Rifa:</span> $${rifa.valor}</p>
+              <p><span class="fw-bold">Fecha del Sorteo:</span> ${rifa.fechaSorteo}</p>
+              <p class="fw-bold">Premios:</p>
+              <ul>
+                    ${rifa.premios.map((premio, i) => `<li>Premio #${i + 1}: ${premio}</li>`).join('')}
+              </ul>
+            </div>
+            <div class="card-footer text-center m-2">
+              <button class="btn btn-warning m-1" onclick="eliminarRifa(${index})">Eliminar</button>
+              <button class="btn btn-primary m-1" onclick="compartirRifa(${index})">Compartir</button>
+              <button class="btn btn-success m1-1" onclick="sortearRifa(${index})">Sortear</button>
+            </div>
+          
     `;
 
     rifasContainer.appendChild(rifaDiv);
-  });
+    document.querySelector("#crearRifaForm").style.display = "none";
+    });
+
 }
 
 
 // Función para eliminar una rifa
+
 function eliminarRifa(index) {
   let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
   rifas.splice(index, 1);
