@@ -585,6 +585,27 @@ function mostrarRifas() {
 
   rifasContainer.appendChild(newRifaButton);
 
+
+//FUNCION PARA CONTAR LOS PARTICIPANTES Y MOSTRAR EN RESUMEN DE RIFA
+
+function contarParticipantes(nombreRifa) {
+  // Obtener las rifas desde el localStorage
+  const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+
+  // Encontrar la rifa correspondiente por nombre
+  const rifaActual = rifas.find((rifa) => rifa.nombre === nombreRifa);
+
+  // Verificar si la rifa fue encontrada
+  if (rifaActual) {
+    // Obtener la cantidad de participantes
+    const cantidadParticipantes = rifaActual.participantes.length;
+
+    return cantidadParticipantes;
+  }
+
+  return 0; // Retornar 0 si no se encontró la rifa
+}
+
   rifas.forEach((rifa, index) => {
     const rifaDiv = document.createElement("div");
     rifaDiv.className =
@@ -600,8 +621,7 @@ function mostrarRifas() {
                 rifa.cantidadNumeros
               }</p>
               <p><span class="fw-bold">Participantes:</span> ${
-                rifa.participantes
-              }</p>
+                contarParticipantes(rifa.nombre)}</p>
               <p><span class="fw-bold">Valor de la Rifa:</span> $${
                 rifa.valor
               }</p>
@@ -619,7 +639,7 @@ function mostrarRifas() {
             </div>
             <div class="card-footer text-center m-2">
               <button class="btn btn-warning m-1" onclick="eliminarRifa(${index})">Eliminar</button>
-              <button class="btn btn-primary m-1" onclick="compartirRifa()">Compartir</button>
+              <button class="btn btn-primary m-1" onclick="compartirRifa('${rifa.nombre}')">Compartir</button>
               <button class="btn btn-success m1-1" onclick="sortearRifa(${index})">Sortear</button>
             </div>
           
@@ -643,22 +663,25 @@ function eliminarRifa(index) {
 
 // FUNCION COMPARTIR RIFA: Si hizo así sino generaba un error con el DOM y no cargaba la rifa dinamicamente //
 
-function compartirRifa() {
+function compartirRifa(nombreRifa) {
+  // Guardar el nombre de la rifa selecionada en el local storage
+  localStorage.setItem("nombreRifaSeleccionada", nombreRifa);
   window.location.href = "/pages/participar.html";
+}
 
-  }
 
 //FUNCION DE COMPRAR RIFA DINAMICA //
 
 function rifaDinamica(index) {
 
+  const nombreRifa = localStorage.getItem("nombreRifaSeleccionada");
   const formularioParticipar = document.querySelector("#formularioParticipar");
   const participarDiv = document.createElement("div");
   participarDiv.innerHTML = `
 
 
   <div class="row mt-4"> 
-<h1 class="text-center col-lg-12 container">Comprá tu Rifa de ...</h1>
+<h1 class="text-center col-lg-12 container">Comprá tu Rifa de ${nombreRifa}</h1>
 <p class="text-center col-12">Completá tus datos para participar y realizar el pago</p>
 
 <form class=" text-center container col-lg-3 col-md-8 col-sm-12" action="/participar" method="post">
@@ -700,16 +723,25 @@ function rifaDinamica(index) {
 
 //ENVIAMOS LO RELLENADO EN EL FORMULARIO AL LOCAL STORAGE //
 
-  formularioParticipar.addEventListener("submit", function (event) {
-    event.preventDefault();
+formularioParticipar.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-    const nombre = document.getElementById("nombre").value;
-    const apellido = document.getElementById("apellido").value;
-    const dni = document.getElementById("dni").value;
-    const telefono = document.getElementById("telefono").value;
-    const email = document.getElementById("email").value;
-    const cantidadRifas = document.getElementById("cantidadRifas").value;
+  const nombre = document.getElementById("nombre").value;
+  const apellido = document.getElementById("apellido").value;
+  const dni = document.getElementById("dni").value;
+  const telefono = document.getElementById("telefono").value;
+  const email = document.getElementById("email").value;
+  const cantidadRifas = document.getElementById("cantidadRifas").value;
 
+  // Recuperar las rifas desde el localStorage
+  const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+
+  // Encontrar la rifa correspondiente por nombre
+  const rifaActual = rifas.find((rifa) => rifa.nombre === nombreRifa);
+
+  // Verificar si la rifa fue encontrada
+  if (rifaActual) {
+    // Crear participante
     const participante = {
       nombre: nombre,
       apellido: apellido,
@@ -719,18 +751,22 @@ function rifaDinamica(index) {
       cantidadRifas: cantidadRifas,
     };
 
-    // Agregar participante a la rifa correspondiente
-    const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
-    console.log("Rifas:", rifas);
-    const rifaActual = rifas[index];
-    rifaActual.participantes.push(participante);
+    // Agregar participante a la rifa según la cantidad de rifas compradas
+    for (let i = 0; i < cantidadRifas; i++) {
+      rifaActual.participantes.push(participante);
+    }
+
+    // Actualizar la rifa en el arreglo de rifas
+    const rifaIndex = rifas.indexOf(rifaActual);
+    rifas[rifaIndex] = rifaActual;
 
     // Guardar las rifas actualizadas en el localStorage
     localStorage.setItem("rifas", JSON.stringify(rifas));
 
     // Luego puedes redirigir o realizar otras acciones necesarias
-  });
-};
+  }
+});
+}
 
 
 
