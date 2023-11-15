@@ -91,52 +91,10 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-          const formularioParticipar = document.querySelector("#formularioParticipar");
-          const participarDiv = document.createElement("div");
-          participarDiv.innerHTML = `
-
-
-          <div class="row mt-4"> 
-<h1 class="text-center col-lg-12 container">Comprá tu Rifa de ...</h1>
-  <p class="text-center col-12">Completá tus datos para participar y realizar el pago</p>
-
-<form class=" text-center container col-lg-3 col-md-8 col-sm-12" action="/participar" method="post">
-  <div class="form-group">
-    <label class="mb-2 mt-2" for="nombre">Nombre</label>
-    <input type="text" class="form-control" id="nombre" name="nombre" required>
-  </div>
-  <div class="form-group">
-    <label class="mb-2 mt-2" for="apellido">Apellido</label>
-    <input type="text" class="form-control" id="apellido" name="apellido" required>
-  </div>
-  <div class="form-group">
-    <label class="mb-2 mt-2" for="dni">DNI</label>
-    <input type="text" class="form-control" id="dni" name="dni" required>
-  </div>
-  <div class="form-group">
-    <label class="mb-2 mt-2" for="telefono">Teléfono</label>
-    <input type="text" class="form-control" id="telefono" name="telefono" required>
-  </div>
-  <div class="form-group">
-    <label class="mb-2 mt-2" for="email">Email</label>
-    <input type="email" class="form-control" id="email" name="email" required>
-  </div>
-  <div class="form-group">
-    <label class="mb-2 mt-2" for="cantidadRifas">Seleccione la Cantidad de Rifas a Comprar</label>
-    <select class="form-control" id="cantidadRifas" name="cantidadRifas" required>
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
-      <option value="4">4</option>
-      <option value="5">5</option>
-    </select>
-  <button type="submit" class="btn-get-started mt-4">Comprar</button>
-</form>
-</div>
-`;
-          formularioParticipar.appendChild(participarDiv);
+          rifaDinamica();
       });
   </script>
+  
 
   </main>
   

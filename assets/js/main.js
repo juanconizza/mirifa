@@ -409,6 +409,9 @@ function logout() {
 
 /********* FIN - LOGIN ************/
 
+//////////////////////////////////
+/////////////////////////////////
+
 /***** PANEL DE USUARIO *******/
 
 //FUNCION VALIDADORA SI HAY RIFAS O NO CREADAS
@@ -505,67 +508,68 @@ function validarFecha() {
 
 document.getElementById("crearRifa").addEventListener("click", crearRifa);
 
-// ***** FIN FUNCION VALIDADORA DE FECHA *****
+// ***** FIN FUNCION VALIDADORA DE FECHA *****///
 
-function crearRifa() {
+// ***** FUNCION CREAR RIFAS CON ID DINAMICO USANDO FETCH DE API ******////
+
+async function obtenerIdDinamico() {
+  try {
+    const response = await fetch('https://www.uuidgenerator.net/api/version1');
+    const data = await response.text();
+    return data;
+  } catch (error) {
+    console.error('Error al obtener el ID:', error);
+    return null;
+  }
+}
+
+async function crearRifa() {
   if (validarFecha()) {
-    const nombreRifa = document.getElementById("nombreRifa").value;
+    const nombreRifa = document.getElementById('nombreRifa').value;
     const cantPremios = parseInt(cantPremiosInput.value, 10);
-    const valorDeLaRifa = document.getElementById("valorDeLaRifa").value;
-    const numerosAEmitir = document.getElementById("numerosAEmitir").value;
-    const fechaSorteo = document.getElementById("fechaSorteo").value;
+    const valorDeLaRifa = document.getElementById('valorDeLaRifa').value;
+    const numerosAEmitir = document.getElementById('numerosAEmitir').value;
+    const fechaSorteo = document.getElementById('fechaSorteo').value;
 
+    //Creamos un array de premios 
     const premios = [];
-    const premiosInputs = document.querySelectorAll("#premiosContainer input");
+    const premiosInputs = document.querySelectorAll('#premiosContainer input');
     premiosInputs.forEach((input) => {
       premios.push(input.value);
     });
 
-    const rifa = {
-      nombre: nombreRifa,
-      cantidadPremios: cantPremios,
-      valor: valorDeLaRifa,
-      cantidadNumeros: numerosAEmitir,
-      fechaSorteo: fechaSorteo,
-      premios: premios,
-    };
+    // Obtener el ID dinámico de la API
+    const idDinamico = await obtenerIdDinamico();
 
-    let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
-    rifas.push(rifa);
-    localStorage.setItem("rifas", JSON.stringify(rifas));
+    if (idDinamico !== null) {
+      const rifa = {
+        id: idDinamico,
+        nombre: nombreRifa,
+        cantidadPremios: cantPremios,
+        valor: valorDeLaRifa,
+        cantidadNumeros: numerosAEmitir,
+        fechaSorteo: fechaSorteo,
+        premios: premios,
+        participantes: [],
+      };
 
-    mostrarRifas();
+      let rifas = JSON.parse(localStorage.getItem('rifas')) || [];
+      rifas.push(rifa);
+      localStorage.setItem('rifas', JSON.stringify(rifas));
+
+      mostrarRifas();
+    }
   }
 }
 
-// Crea un objeto para representar la rifa
-const rifa = {
-  nombre: nombreRifa,
-  premios: [],
-  valor: valorDeLaRifa,
-  cantidadNumeros: numerosAEmitir,
-  participantes: participantesRifa,
-  fechaSorteo: fechaSorteo,
-};
 
-// Agrega los nombres de los premios al objeto rifa
-const premiosInputs = document.querySelectorAll("#premiosContainer input");
-premiosInputs.forEach((input) => {
-  rifa.premios.push(input.value);
-});
+// Limpia el formulario al crear una nueva rifa //
 
-// Guarda la rifa en el almacenamiento local
-let rifas = JSON.parse(localStorage.getItem("rifas")) || [];
-rifas.push(rifa);
-localStorage.setItem("rifas", JSON.stringify(rifas));
-
-// Actualiza la lista de rifas en el DOM
-mostrarRifas();
-
-// Limpia el formulario
 document.getElementById("rifaForm").reset();
 
-// Función para mostrar las rifas en el DOM
+
+// Función para mostrar las rifas en el DOM //
+
 function mostrarRifas() {
   const rifasContainer = document.getElementById("rifasContainer");
   rifasContainer.innerHTML = "";
@@ -576,7 +580,7 @@ function mostrarRifas() {
   newRifaButton.className =
     "d-flex justify-content-center align-items-center mt-4";
   newRifaButton.innerHTML = `
-    <button id=nuevaRifaBoton class="btn btn-primary" onclick="abrirFormulario()">Nueva Rifa</button>
+    <button id=nuevaRifaBoton class="btn-get-started" onclick="abrirFormulario()">Nueva Rifa</button>
   `;
 
   rifasContainer.appendChild(newRifaButton);
@@ -615,7 +619,7 @@ function mostrarRifas() {
             </div>
             <div class="card-footer text-center m-2">
               <button class="btn btn-warning m-1" onclick="eliminarRifa(${index})">Eliminar</button>
-              <button class="btn btn-primary m-1" onclick="compartirRifa(${index})">Compartir</button>
+              <button class="btn btn-primary m-1" onclick="compartirRifa()">Compartir</button>
               <button class="btn btn-success m1-1" onclick="sortearRifa(${index})">Sortear</button>
             </div>
           
@@ -637,12 +641,99 @@ function eliminarRifa(index) {
   location.reload();
 }
 
-// FUNCION COMPARTIR RIFA //
+// FUNCION COMPARTIR RIFA: Si hizo así sino generaba un error con el DOM y no cargaba la rifa dinamicamente //
 
-function compartirRifa(index) {
+function compartirRifa() {
   window.location.href = "/pages/participar.html";
 
   }
+
+//FUNCION DE COMPRAR RIFA DINAMICA //
+
+function rifaDinamica(index) {
+
+  const formularioParticipar = document.querySelector("#formularioParticipar");
+  const participarDiv = document.createElement("div");
+  participarDiv.innerHTML = `
+
+
+  <div class="row mt-4"> 
+<h1 class="text-center col-lg-12 container">Comprá tu Rifa de ...</h1>
+<p class="text-center col-12">Completá tus datos para participar y realizar el pago</p>
+
+<form class=" text-center container col-lg-3 col-md-8 col-sm-12" action="/participar" method="post">
+<div class="form-group">
+<label class="mb-2 mt-2" for="nombre">Nombre</label>
+<input type="text" class="form-control" id="nombre" name="nombre" required>
+</div>
+<div class="form-group">
+<label class="mb-2 mt-2" for="apellido">Apellido</label>
+<input type="text" class="form-control" id="apellido" name="apellido" required>
+</div>
+<div class="form-group">
+<label class="mb-2 mt-2" for="dni">DNI</label>
+<input type="text" class="form-control" id="dni" name="dni" required>
+</div>
+<div class="form-group">
+<label class="mb-2 mt-2" for="telefono">Teléfono</label>
+<input type="text" class="form-control" id="telefono" name="telefono" required>
+</div>
+<div class="form-group">
+<label class="mb-2 mt-2" for="email">Email</label>
+<input type="email" class="form-control" id="email" name="email" required>
+</div>
+<div class="form-group">
+<label class="mb-2 mt-2" for="cantidadRifas">Seleccione la Cantidad de Rifas a Comprar</label>
+<select class="form-control" id="cantidadRifas" name="cantidadRifas" required>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+</select>
+<button type="submit" class="btn-get-started mt-4">Comprar</button>
+</form>
+</div>
+`;
+  formularioParticipar.appendChild(participarDiv);
+
+
+//ENVIAMOS LO RELLENADO EN EL FORMULARIO AL LOCAL STORAGE //
+
+  formularioParticipar.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const nombre = document.getElementById("nombre").value;
+    const apellido = document.getElementById("apellido").value;
+    const dni = document.getElementById("dni").value;
+    const telefono = document.getElementById("telefono").value;
+    const email = document.getElementById("email").value;
+    const cantidadRifas = document.getElementById("cantidadRifas").value;
+
+    const participante = {
+      nombre: nombre,
+      apellido: apellido,
+      dni: dni,
+      telefono: telefono,
+      email: email,
+      cantidadRifas: cantidadRifas,
+    };
+
+    // Agregar participante a la rifa correspondiente
+    const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+    console.log("Rifas:", rifas);
+    const rifaActual = rifas[index];
+    rifaActual.participantes.push(participante);
+
+    // Guardar las rifas actualizadas en el localStorage
+    localStorage.setItem("rifas", JSON.stringify(rifas));
+
+    // Luego puedes redirigir o realizar otras acciones necesarias
+  });
+};
+
+
+
 
 // Función para sortear una rifa (puedes implementarla según tus necesidades)
 function sortearRifa(index) {
