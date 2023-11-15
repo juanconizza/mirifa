@@ -633,15 +633,16 @@ function eliminarRifa(index) {
   rifas.splice(index, 1);
   localStorage.setItem("rifas", JSON.stringify(rifas));
 
-  // Call validarRifa() after updating local storage
   validarRifas();
   location.reload();
 }
 
-// Función para compartir una rifa (puedes implementarla según tus necesidades)
+// FUNCION COMPARTIR RIFA //
+
 function compartirRifa(index) {
-  // Implementa la lógica de compartir la rifa
-}
+  window.location.href = "/pages/participar.html";
+
+  }
 
 // Función para sortear una rifa (puedes implementarla según tus necesidades)
 function sortearRifa(index) {

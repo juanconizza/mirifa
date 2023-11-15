@@ -40,7 +40,6 @@
 
     <!-- Template Main CSS File -->
     <link href="../assets/css/style.css" rel="stylesheet" />
-
   </head>
 
   <body>
@@ -48,23 +47,24 @@
     <header id="header" class="fixed-top">
       <div class="container d-flex align-items-center">
         <h1 class="logo me-auto"><a href="../index.html"></a></h1>
-        <a href="index.html" class="logo me-auto"
+        <a href="../index.html" class="logo me-auto"
           ><img src="../assets/img/logo.png" alt="" class="img-fluid"
         /></a>
 
         <nav id="navbar" class="navbar">
           <ul>
-            <li><a class="nav-link scrollto active" href="rifa-user-panel.html">Mis Rifas</a></li>
-            <li><a class="nav-link scrollto" href="../index.html#about">Configuración de Cobro</a></li>
-            <li><a class="nav-link scrollto" href="../index.html#contact">Soporte</a></li>
+            <li><a class="nav-link scrollto active" href="../index.html#hero">Inicio</a></li>
+            <li><a class="nav-link scrollto" href="../index.html#about">Nosotros</a></li>
+            <li><a class="nav-link scrollto" href="../index.html#services">Ventajas</a></li>
+            <li><a class="nav-link scrollto" href="../index.html#contact">Contacto</a></li>
             <li>
-              <a class="getstarted scrollto" href="#" onclick="logout()">Cerrar Sesión</a>
+              <a class="getstarted scrollto" href="login.html">Iniciar Sesión</a>
             </li>
           </ul>
           <i class="bi bi-list mobile-nav-toggle"></i>
         </nav>
         <!-- .navbar -->
-      </div> 
+      </div>
     </header>
     <!-- End Header -->
 
@@ -77,74 +77,71 @@
 
         <ol>
           <li><a href="../index.html">Home</a></li>
-          <li>Panel de Usuario</li>
+          <li>Comprá tu Rifa</li>
         </ol>
-        <h2>Panel de Usuario</h2>
+        <h2>Comprá tu Rifa</h2>
 
       </div>
     </section><!-- End Breadcrumbs -->
 
-    <div id="noRifasContainer">
-      <!-- Aquí se muestra mensaje si no hay rifas creadas -->
-    </div>
-
-<!--Formulario para Crear Nueva Rifa  -->
-
-<div id="crearRifaForm" class="container">
-      <div class="row">
-        <div id="creaRifaTitle" class="col-12 text-center">
-          <h2>¡Crea tu Rifa!</h2>
-        </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="text-center col-lg-4 col-md-4 col-sm-3">
-          <form id="rifaForm">
-            <div class="mb-3">
-              <label for="nombreRifa" class="form-label">Nombre de la Rifa:</label>
-              <input type="text" id="nombreRifa" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="cantPremios" class="form-label">Cantidad de Premios:</label>
-              <input type="number" id="cantPremios" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="valorDeLaRifa" class="form-label">Valor de la Rifa:</label>
-              <input type="number" id="valorDeLaRifa" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="numerosAEmitir" class="form-label">Cantidad de Rifas a Emitir:</label>
-              <input type="number" id="numerosAEmitir" class="form-control" required>
-            </div>
-            <div class="mb-3">
-              <label for="fechaSorteo" class="form-label">Fecha del Sorteo (dd/mm/aaaa):</label>
-              <input type="text" id="fechaSorteo" class="form-control" required>
-              <div id="fechaSorteoError" class="error-message"></div>
-              </div>
-            <div id="premiosContainer">
-              <!-- Aquí se agregarán los campos de entrada para los nombres de premios de forma dinamica con la funcion en main.js -->
-            </div>
-            <button type="button" id="crearRifa" class="btn-get-started">Crear Rifa</button>
-          </form>
-        </div>
-      </div>
-    </div> 
-
-    <!-- RIFAS CREADAS -->
     
-    <div class="container">
-      <div id="rifasContainer" class="row justify-content-center mt-3">
-            
- <!-- Aquí se mostrarán las rifas guardadas -->
-      </div>
-    </div>
+    <!-- Formulario de compra de Rifa -->
+    
+    <div id="formularioParticipar"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const formularioParticipar = document.querySelector("#formularioParticipar");
+          const participarDiv = document.createElement("div");
+          participarDiv.innerHTML = `
 
 
+          <div class="row mt-4"> 
+<h1 class="text-center col-lg-12 container">Comprá tu Rifa de ...</h1>
+  <p class="text-center col-12">Completá tus datos para participar y realizar el pago</p>
 
-</body>
-</html>
+<form class=" text-center container col-lg-3 col-md-8 col-sm-12" action="/participar" method="post">
+  <div class="form-group">
+    <label class="mb-2 mt-2" for="nombre">Nombre</label>
+    <input type="text" class="form-control" id="nombre" name="nombre" required>
+  </div>
+  <div class="form-group">
+    <label class="mb-2 mt-2" for="apellido">Apellido</label>
+    <input type="text" class="form-control" id="apellido" name="apellido" required>
+  </div>
+  <div class="form-group">
+    <label class="mb-2 mt-2" for="dni">DNI</label>
+    <input type="text" class="form-control" id="dni" name="dni" required>
+  </div>
+  <div class="form-group">
+    <label class="mb-2 mt-2" for="telefono">Teléfono</label>
+    <input type="text" class="form-control" id="telefono" name="telefono" required>
+  </div>
+  <div class="form-group">
+    <label class="mb-2 mt-2" for="email">Email</label>
+    <input type="email" class="form-control" id="email" name="email" required>
+  </div>
+  <div class="form-group">
+    <label class="mb-2 mt-2" for="cantidadRifas">Seleccione la Cantidad de Rifas a Comprar</label>
+    <select class="form-control" id="cantidadRifas" name="cantidadRifas" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+    </select>
+  <button type="submit" class="btn-get-started mt-4">Comprar</button>
+</form>
+</div>
+`;
+          formularioParticipar.appendChild(participarDiv);
+      });
+  </script>
 
+  </main>
+  
+  <!-- End #main -->
 
-  </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer">
@@ -218,12 +215,11 @@
     ><i class="bi bi-arrow-up-short"></i
   ></a>
 
-  
-
 <!-- Sweet Alert Script -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <!-- Vendor JS Files -->
+
   <script src="../assets/vendor/aos/aos.js"></script>
   <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/vendor/glightbox/js/glightbox.min.js"></script>
@@ -235,6 +231,5 @@
   <!-- Template Main JS File -->
   <script src="../assets/js/main.js"></script>
 
-    
 </body>
 </html>
