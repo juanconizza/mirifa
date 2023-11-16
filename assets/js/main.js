@@ -1,5 +1,3 @@
-
-
 (function () {
   "use strict";
 
@@ -270,12 +268,9 @@
 
 //CARGO ESTE DOMCONTENTLOADED al comienzo ya que de otra forma no funciona en el panel de usuario ///
 
-
 let cantPremiosInput;
 
 document.addEventListener("DOMContentLoaded", function () {
-  
-  
   //VALIDAMOS SI EL USUARIO ESTÁ LOGEADO O NO///
   function checkLoggedIn() {
     const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -410,27 +405,28 @@ function logout() {
   Swal.fire({
     title: "Cerraste la Sesión",
     html: "Saliendo en... <b></b> segundos.",
-    timer: 2000,
+    timer: 3000, 
     timerProgressBar: true,
     icon: `success`,
     didOpen: () => {
       Swal.showLoading();
       const b = Swal.getHtmlContainer().querySelector("b");
       timerInterval = setInterval(() => {
-        b.textContent = Swal.getTimerLeft();
+        b.textContent = (Swal.getTimerLeft() / 1000).toFixed(0); 
       }, 100);
     },
     willClose: () => {
       clearInterval(timerInterval);
     },
   }).then((result) => {
-    /* Read more about handling dismissals below */
+    
     if (result.dismiss === Swal.DismissReason.timer) {
       // Redirige al usuario a la página de inicio de sesión u otra página deseada
       window.location.href = "../index.html";
     }
   });
 }
+
 
 /********* FIN - LOGIN ************/
 
@@ -610,12 +606,14 @@ function mostrarRifas() {
 
   //FUNCION PARA CONTAR LOS PARTICIPANTES Y MOSTRAR EN RESUMEN DE RIFA //
 
-  function contarParticipantes(nombreRifa) {
+  function contarParticipantes(idRifa, nombreRifa) {
     // Obtener las rifas desde el localStorage
     const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
 
-    // Encontrar la rifa correspondiente por nombre
-    const rifaActual = rifas.find((rifa) => rifa.nombre === nombreRifa);
+    // Encontrar la rifa correspondiente por ID y nombre
+    const rifaActual = rifas.find(
+      (rifa) => rifa.id === idRifa && rifa.nombre === nombreRifa
+    );
 
     // Verificar si la rifa fue encontrada
     if (rifaActual) {
@@ -643,6 +641,7 @@ function mostrarRifas() {
                 rifa.cantidadNumeros
               }</p>
               <p><span class="fw-bold">Participantes:</span> ${contarParticipantes(
+                rifa.id,
                 rifa.nombre
               )}</p>
               <p><span class="fw-bold">Valor de la Rifa:</span> $${
@@ -802,9 +801,85 @@ function rifaDinamica() {
 
 /********/ // FUNCION SORTEAR RIFA ////*********
 
-function sortearRifa(index) {
-  // Implementa la lógica de sortear la rifa
+async function sortearRifa(index) {
+  // Obtener las rifas desde el localStorage
+  const rifas = JSON.parse(localStorage.getItem("rifas")) || [];
+
+  // Encontrar la rifa correspondiente por índice
+  const rifaSeleccionada = rifas[index];
+
+  // Verificar si la rifa fue encontrada
+  if (rifaSeleccionada) {
+    const cantidadParticipantes = rifaSeleccionada.participantes.length;
+
+    if (cantidadParticipantes === 0) {
+      Swal.fire({
+        title: "¡No hay participantes!",
+        text: "No hay participantes registrados en esta rifa para realizar el sorteo.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
+      return;
+    }
+
+    // Obtener un número aleatorio utilizando una API externa
+    try {
+      const randomNumberResponse = await fetch(
+        `https://www.random.org/integers/?num=1&min=1&max=${cantidadParticipantes}&col=1&base=10&format=plain&rnd=new`
+      );
+      const randomNumber = await randomNumberResponse.text();
+
+      const indiceGanador = parseInt(randomNumber.trim(), 10) - 1; // Restamos 1 porque los índices comienzan desde 0
+
+      const participanteGanador = rifaSeleccionada.participantes[indiceGanador];
+
+      let timerInterval;
+
+      Swal.fire({
+        title: "EL GANADOR ES...",
+        html: " <b></b> ",
+        timer: 10000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getPopup().querySelector("b");
+          timerInterval = setInterval(() => {
+            timer.textContent = `${(Swal.getTimerLeft() / 1000).toFixed(0)}`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+
+          Swal.fire({
+            title: "¡Sorteo realizado!",
+            html: `<p>El ganador es:</p><p><strong>${participanteGanador.nombre} ${participanteGanador.apellido}</strong></p>`,
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Aceptar",
+          });
+        },
+      });
+    } catch (error) {
+      console.error("Error al obtener el número aleatorio:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un error al realizar el sorteo. Inténtalo nuevamente.",
+        icon: "error",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Aceptar",
+      });
+    }
+  } else {
+    Swal.fire({
+      title: "¡Rifa no encontrada!",
+      text: "La rifa seleccionada no pudo ser encontrada.",
+      icon: "error",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "Aceptar",
+    });
+  }
 }
 
 
-checkLoggedIn()
+checkLoggedIn();
