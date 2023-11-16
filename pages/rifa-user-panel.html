@@ -41,6 +41,16 @@
     <!-- Template Main CSS File -->
     <link href="../assets/css/style.css" rel="stylesheet" />
 
+<script>
+function checkLoggedIn() {
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  if (!loggedInUser) {
+    window.location.href = "../pages/login.html";
+  }
+}
+  checkLoggedIn()
+</script>
+
   </head>
 
   <body>
@@ -48,7 +58,7 @@
     <header id="header" class="fixed-top">
       <div class="container d-flex align-items-center">
         <h1 class="logo me-auto"><a href="../index.html"></a></h1>
-        <a href="index.html" class="logo me-auto"
+        <a href="../index.html" class="logo me-auto"
           ><img src="../assets/img/logo.png" alt="" class="img-fluid"
         /></a>
 
